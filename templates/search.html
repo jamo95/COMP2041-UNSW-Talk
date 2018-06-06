@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+<!-- HTML and CSS all from bootstrap and www.w3schools.com -->
+
+{% block body_contents %}
+{% if session.logged_in %}
+
+<form action="{{ url_for('search') }}" method="post">
+	<div class="form-group">
+		<label>Search for profiles:</label>
+		<input type="text" class="form-control" name="searched_name">
+	</div>
+</form>
+
+<form action="{{ url_for('search') }}" method="post">
+	<div class="form-group">
+		<label>Search for posts:</label>
+		<input type="text" class="form-control" name="searched_post">
+	</div>
+</form>
+
+{% set high = paginate["page"] * 20%}
+{% set low = high -  20%}
+
+{% if pos_names %}
+<div class="panel panel-info">
+	<div class="panel-heading">Matched Names</div>
+		<div class="panel-body">
+		{% for name in pos_names %}
+		{% if loop.index > low and high >= loop.index %}
+			<br />
+			<a href="{{ url_for('profile') + '?zid=' + name['zid'] }}">{{ name["full_name"] }}</a>
+			<br />
+			{% if name["image"] %}
+			<a href="{{ url_for('profile') + '?zid=' + name['zid'] }}"><img src="{{ name['image'] }}"></a>
+			<br />
+			{% endif%}
+		{% endif %}
+	    {% endfor %}
+      	</div>
+	</div>
+</div>
+{% endif %}
+
+
+{% if pos_posts %}
+<div class="panel panel-info">
+	<div class="panel-heading">Matched Posts</div>
+		<div class="panel-body">
+		{% for post in pos_posts %}
+		{% if loop.index > low and high >= loop.index %}
+		<div class="media">
+	        <div class="media-left">
+	        	<img src="{{ zids[post["zid"]]['image'] }}" class="media-object" style="width:45px">
+	        </div>
+	        <div class="media-body">
+		        <h4 class="media-heading">{{ zids[post["zid"]]['full_name'] }} <small><i>{{ post["time"] }}</i></small></h4>
+		        <p>{{ pos_posts[post]["message"] | safe}}</p>
+				{% if post["zid"] == session["zid"] %}
+		        <form action="{{ url_for('search') }}" method="post">
+			        <input type="submit" class="btn btn-danger" value="delete">
+			        <input type="hidden" name="delete" value="{{ 'post-'+post['zid']+'-'+post['post_id'] }}"/>
+				</form>	
+				{% endif %}
+		        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{post['zid']}}-{{post['post_id']}}">comment</button>
+				<div id="{{post['zid']}}-{{post['post_id']}}" class="collapse">
+					<form action="{{ url_for('search')}}" method="post">
+					<div class="form-group">
+						<input type="text" class="form-control" name="comment_message">
+						<input type="hidden" name="comment_order" value="{{ post['zid'] + "-" + post['post_id'] }}"/>
+					</div>
+					</form>
+				</div>
+				{% if pos_posts[post]["comments"] %}
+				<a href="#comments-{{ post['zid'] }}-{{ post['post_id'] }}" data-toggle="collapse">See comments</a>
+				<div id="comments-{{ post['zid'] }}-{{ post['post_id'] }}" class="collapse">
+		        {% for comment in pos_posts[post]["comments"] %}
+					<div class="media">
+				        <div class="media-left">
+				          <img src="{{ zids[comment['zid']]['image'] }}" class="media-object" style="width:45px">
+				        </div>
+				        <div class="media-body">
+					        <h4 class="media-heading">{{ zids[comment["zid"]]['full_name'] }} <small><i>{{ comment["time"] }}</i></small></h4>
+					        <p>{{ pos_posts[post]["comments"][comment]["message"]  | safe }}</p>
+							{% if comment["zid"] == session["zid"] %}
+					        <form action="{{ url_for('search') }}" method="post">
+						        <input type="submit" class="btn btn-danger" value="delete">
+						        <input type="hidden" name="delete" value="{{ 'comment-'+comment['post_zid']+'-'+comment['to_post']+'-'+comment['comment_id'] }}"/>
+    						</form>	
+							{% endif %}
+				          	<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{post['zid']}}-{{post['post_id']}}-{{comment['comment_id']}}">reply</button>
+							<div id="{{post['zid']}}-{{post['post_id']}}-{{comment['comment_id']}}" class="collapse">
+								<form action="{{ url_for('search') }}" method="post">
+								<div class="form-group">
+									<input type="text" class="form-control" name="reply_message">
+									<input type="hidden" name="reply_order" value="{{ post['zid'] + "-" + post['post_id'] + "-" + comment['comment_id'] }}"/>
+								</div>
+								</form>
+							</div>
+							{% if pos_posts[post]["comments"][comment]["replies"] %}
+							<a href="#replies-{{ comment['zid'] }}-{{ comment['to_post'] }}-{{ comment['comment_id'] }}" data-toggle="collapse">See replies</a>
+							<div id="replies-{{ comment['zid'] }}-{{ comment['to_post'] }}-{{ comment['comment_id'] }}" class="collapse">
+					        {% for reply in pos_posts[post]["comments"][comment]["replies"] %}
+							<div class="media">
+						        <div class="media-left">
+						          <img src="{{ zids[reply['zid']]['image'] }}" class="media-object" style="width:45px">
+						        </div>
+						        <div class="media-body">
+							        <h4 class="media-heading">{{ zids[reply["zid"]]['full_name'] }} <small><i>{{ reply["time"] }}</i></small></h4>
+							        <p>{{ pos_posts[post]["comments"][comment]["replies"][reply]["message"] | safe }}</p>
+								    {% if reply['zid'] == session["zid"] %}
+								        <form action="{{ url_for('search') }}" method="post">
+									        <input type="submit" class="btn btn-danger" value="delete">
+									        <input type="hidden" name="delete" value="{{ 'reply-'+reply['post_zid']+'-'+reply['to_post']+'-'+reply['to_comment']+'-'+reply['reply_id'] }}"/>
+			    						</form>	
+		    						{% endif %}
+						        </div>
+							</div>
+							{% endfor %}
+							</div>
+							{% endif %}
+				        </div>
+					</div>
+				{% endfor %}
+				</div>
+			{% endif %}
+	    </div>
+	</div>
+	{% endif %}
+	{% endfor %}
+  	</div>
+</div>
+
+{% endif %}
+
+{% if paginate["total_pages"] > 1 and pos_posts%}
+<ul class="pagination">
+	{% for num in range(paginate["total_pages"])%}
+	{% set page = num + 1 %}
+	{% if page != paginate["page"] %}
+	<li ><a href="?page={{page}}&searched_post={{searched_post}}">{{page}}</a></li>
+	{% else %}
+  	<li class="active"><a href="?page={{page}}&searched_post={{searched_post}}">{{page}}</a></li>
+  	{% endif %}
+  	{% endfor %}
+</ul>
+{% elif paginate["total_pages"] > 1 and pos_names %}
+<ul class="pagination">
+	{% for num in range(paginate["total_pages"])%}
+	{% set page = num + 1 %}
+	{% if page != paginate["page"] %}
+	<li ><a href="?page={{page}}&searched_name={{searched_name}}">{{page}}</a></li>
+	{% else %}
+  	<li class="active"><a href="?page={{page}}&searched_name={{searched_name}}">{{page}}</a></li>
+  	{% endif %}
+  	{% endfor %}
+</ul>
+
+{% endif %}
+
+{% else %}
+	<a href="{{ url_for('login')}}">Login</a>
+{% endif%}
+{% endblock %}

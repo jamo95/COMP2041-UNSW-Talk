@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+<!-- HTML and CSS all from bootstrap and www.w3schools.com -->
+
+{% block body_contents %}
+{% if session.logged_in %}
+
+{% if name %}
+	{{ name }}
+{% endif %}
+
+{% if student_details["image"] %}
+<center><img src="{{ student_details['image'] }}"></center>
+{% endif %}
+
+<br />
+
+{% if student_details %}
+  <div class="panel-group">
+    <div class="panel panel-primary">
+	    <div class="panel-heading">Profile for <b>{{ student_details["full_name"] }}</b></div>
+	    	{% if student_details["profile_text"] %}
+	    		<div class="panel-body">Profile text: {{student_details["profile_text"]}}</div>
+	    	{% endif %}
+	    	{% if student_details["zid"] %}
+	    		<div class="panel-body">Student ID: {{student_details["zid"]}}</div>
+	    	{% endif %}
+	    	{% if student_details["birthday"] %}
+	    		<div class="panel-body">Birthday: {{student_details["birthday"]}}</div>
+	    	{% endif %}
+	    	{% if student_details["program"] %}
+				<div class="panel-body">Program: {{student_details["program"]}}</div>
+			{% endif %}
+			{% if student_details["friends"] %}
+				<div class="panel-body">Friends: 
+					{% for zid in student_details["friends"] %}
+						<span>{{zids[zid]["full_name"]}}, </span>
+					{% endfor %}
+				</div>
+			{% endif %}
+			{% if student_details["home_suburb"] %}
+				<div class="panel-body">Home: {{student_details["home_suburb"]}}</div>
+			{% endif %}
+	    </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if my_posts %}
+<div class="panel panel-info">
+  <div class="panel-heading">Posts</div>
+  	<div class="panel-body">
+	{% for post in my_posts %}
+	<div class="media">
+	    <div class="media-left">
+	    	<img src="{{ zids[post["zid"]]['image'] }}" class="media-object" style="width:45px">
+	    </div>
+	    <div class="media-body">
+	        <h4 class="media-heading">{{ zids[post["zid"]]['full_name'] }} <small><i>{{ post["time"] }}</i></small></h4>
+	        <p>{{ my_posts[post]["message"] | safe}}</p>
+			{% if post["zid"] == session["zid"] %}
+	        <form action="{{ url_for('profile') }}" method="post">
+		        <input type="submit" class="btn btn-danger" value="delete">
+		        <input type="hidden" name="delete" value="{{ 'post-'+post['zid']+'-'+post['post_id'] }}"/>
+			</form>	
+			{% endif %}
+	        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{post['zid']}}-{{post['post_id']}}">comment</button>
+			<div id="{{post['zid']}}-{{post['post_id']}}" class="collapse">
+				<form action="{{ url_for('profile')}}" method="post">
+				<div class="form-group">
+					<input type="text" class="form-control" name="comment_message">
+					<input type="hidden" name="comment_order" value="{{ post['zid'] + "-" + post['post_id'] }}"/>
+				</div>
+				</form>
+			</div>
+			{% if my_posts[post]["comments"] %}
+			<a href="#comments-{{ post['zid'] }}-{{ post['post_id'] }}" data-toggle="collapse">See comments</a>
+			<div id="comments-{{ post['zid'] }}-{{ post['post_id'] }}" class="collapse">
+	        {% for comment in my_posts[post]["comments"] %}
+				<div class="media">
+			        <div class="media-left">
+			          <img src="{{ zids[comment['zid']]['image'] }}" class="media-object" style="width:45px">
+			        </div>
+			        <div class="media-body">
+				        <h4 class="media-heading">{{ zids[comment["zid"]]['full_name'] }} <small><i>{{ comment["time"] }}</i></small></h4>
+				        <p>{{ my_posts[post]["comments"][comment]["message"]  | safe }}</p>
+						{% if comment["zid"] == session["zid"] %}
+				        <form action="{{ url_for('profile') }}" method="post">
+					        <input type="submit" class="btn btn-danger" value="delete">
+					        <input type="hidden" name="delete" value="{{ 'comment-'+comment['post_zid']+'-'+comment['to_post']+'-'+comment['comment_id'] }}"/>
+						</form>	
+						{% endif %}
+			          	<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#{{post['zid']}}-{{post['post_id']}}-{{comment['comment_id']}}">reply</button>
+						<div id="{{post['zid']}}-{{post['post_id']}}-{{comment['comment_id']}}" class="collapse">
+							<form action="{{ url_for('profile') }}" method="post">
+							<div class="form-group">
+								<input type="text" class="form-control" name="reply_message">
+								<input type="hidden" name="reply_order" value="{{ post['zid'] + "-" + post['post_id'] + "-" + comment['comment_id'] }}"/>
+							</div>
+							</form>
+						</div>
+						{% if my_posts[post]["comments"][comment]["replies"] %}
+						<a href="#replies-{{ comment['zid'] }}-{{ comment['to_post'] }}-{{ comment['comment_id'] }}" data-toggle="collapse">See replies</a>
+						<div id="replies-{{ comment['zid'] }}-{{ comment['to_post'] }}-{{ comment['comment_id'] }}" class="collapse">
+				        {% for reply in my_posts[post]["comments"][comment]["replies"] %}
+						<div class="media">
+					        <div class="media-left">
+					          <img src="{{ zids[reply['zid']]['image'] }}" class="media-object" style="width:45px">
+					        </div>
+					        <div class="media-body">
+						        <h4 class="media-heading">{{ zids[reply["zid"]]['full_name'] }} <small><i>{{ reply["time"] }}</i></small></h4>
+						        <p>{{ my_posts[post]["comments"][comment]["replies"][reply]["message"] | safe }}</p>
+							    {% if reply['zid'] == session["zid"] %}
+							        <form action="{{ url_for('profile') }}" method="post">
+								        <input type="submit" class="btn btn-danger" value="delete">
+								        <input type="hidden" name="delete" value="{{ 'reply-'+reply['post_zid']+'-'+reply['to_post']+'-'+reply['to_comment']+'-'+reply['reply_id'] }}"/>
+		    						</form>	
+	    						{% endif %}
+					        </div>
+						</div>
+						{% endfor %}
+						</div>
+						{% endif %}
+			        </div>
+				</div>
+			{% endfor %}
+			</div>
+			{% endif %}
+	    </div>
+	</div>
+{% endfor %}
+</div>
+</div>
+{% endif %}
+
+
+<br />
+<br />
+
+{% if friends %}
+<h2>Friends</h2>
+<br />
+<div>
+	{% for zid in friends %}
+	<div>
+		Name: <a href="{{ url_for('profile') + '?zid=' + zid }}">{{ friends[zid][0] }}</a>
+		<br />
+		{% if friends[zid][1] %}
+			<a href="{{ url_for('profile') + '?zid=' + zid }}"><img src="{{ friends[zid][1] }}" height="100"></a>
+		{% endif %}
+		<br />
+	</div>
+	{% endfor %}
+</div>
+{% endif %}
+
+<form method="POST" action="">
+    <input type="hidden" name="n" value="7">
+    <input type="submit" value="Next student" class="unswtalk_button">
+</form>
+{% else %}
+	<a href="{{ url_for('login')}}">Login</a>
+{% endif%}
+{% endblock %}

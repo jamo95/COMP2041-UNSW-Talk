@@ -1,0 +1,127 @@
+25/10/17	12:00	14:00	removed private information i.e. password, courses, email, location
+
+25/10/17	14:30	15:50	display profile image when image file exists
+
+25/10/17	15:50	16:40	display posts
+
+25/10/17	21:00	22:10	display in reverse chronological order
+
+25/10/17	22:10	22:30	added navigation panel
+
+26/10/17	01:00	02:10	display friends with their profile images
+
+26/10/17	02:00	03:10	added search box front end and search page
+
+26/10/17	03:10	03:40	list names in search page
+
+26/10/17	14:00	15:00	created dictionaries to hold student details
+
+26/10/17	23:00	24:00	added links and images to search list
+
+27/10/17	00:30	00:40	added correct FAQ link to profile page
+
+27/10/17	00:45	03:30	added login
+
+27/10/17	14:00	14:40	other pages hidden when logged in
+
+27/10/17	17:00	17:30	added links to friend profiles
+
+28/10/17	00:00	02:20	show feed of recent posts and friend posts once logged in
+
+28/10/17	02:30	03:30	search for posts
+
+28/10/17	03:30	04:20	post messages
+
+28/10/17	04:20	04:30	display friend name instead of zid in their posts
+
+28/10/17	14:00	21:30	added sqlite database and added posts with mentions
+
+28/10/17	21:40	22:30	fixed post, comment, reply ids in db
+
+28/10/17	22:40	23:10	improved speed of quering mentioned posts
+
+28/10/17	23:10	23:55	fixed new post issue with not creating new file
+
+29/10/17	00:00	00:10	better formatting for posts
+
+29/10/17	01:00	01:20	show comments and replies for my posts
+
+29/10/17	01:20	02:20	fixed show comments and replies that only have user zid
+
+29/10/17	02:20	03:10	improved styling
+
+29/10/17	03:10	05:00	able to make comments
+
+29/10/17	05:00	05:20	replies not fully working
+
+29/10/17	13:00	14:10	fixed replies posting
+
+29/10/17	14:10	15:50	replaced zid with name links in replies
+
+29/10/17	16:00	18:50	name links in posts and comments
+
+29/10/17	18:50	19:15	comment and reply option in friends posts and mentioned posts
+
+29/10/17	19:15	19:50	removed own posts from mentioned
+
+29/10/17	20:00	20:30	improved profile page styling
+
+29/10/17	20:30	21:00	improved search pagestyling
+
+29/10/17	21:30	22:00	added logout
+
+29/10/17	22:30	22:15	added init script
+
+29/10/17	22:30	23:50	settings section and option to add friends
+
+30/10/17	00:00	00:20	fixed post bug
+
+30/10/17	00:20	00:50	option to delete friend and friend management connected to database
+
+30/10/17	01:20	02:00	option to add summary
+
+30/10/17	02:00	03:20	password recovery
+
+30/10/17	03:20	04:40	delete replies added
+
+30/10/17	04:40	05:10	delete comments added
+
+30/10/17	05:10	05:40	delete posts added
+
+30/10/17	05:40	05:41	updated FAQ
+
+30/10/17	05:41	05:58	fixed creating new posts, comments and reply id order
+
+30/10/17	06:00	06:10	combined queries for own posts, from friends and mentions
+
+30/10/17	06:10	06:25	moved post format to search page
+
+30/10/17	07:10	08:30	paginate working for feed
+
+30/10/17	08:30	09:10	paginate working for search
+
+30/10/17	09:10	09:50	commenting
+
+30/10/17	09:50	09:55	moved deletion and posting logic from feed to search
+
+30/10/17	14:00	14:30	fixed not logged in bug
+
+30/10/17	14:30	15:10	fixed iteration in profile
+
+30/10/17	15:10	15:40	added default image
+
+30/10/17	16:30	16:40	added name to feed
+
+30/10/17	16:40	17:20	added comments and replies to profile posts ad fixed bug in replies
+
+30/10/17	15:20	18:00	friend suggestions
+
+30/10/17	18:20	18:20	friend suggestion pagination
+
+30/10/17	18:20	18:20	added password reset
+
+30/10/17	19:20	20:30	improved styling line size
+
+30/10/17	21:00	22:30	added account creation
+
+30/10/17	22:30	23:10	smalling testing changes

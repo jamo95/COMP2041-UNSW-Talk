@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+<!-- HTML and CSS all from bootstrap and www.w3schools.com -->
+
+{% block body_contents %}
+<h2>Account Creation</h2>
+<br/>
+<p>
+<form method="POST" action="create">
+	<p>
+	token: <input type="text" name="token" >
+	<p>
+	<br/>
+	zid: <input type="text" name="zid" > 
+	<p>
+	<br/>
+	<input type="submit" value="Create" >
+</form>
+
+{% endblock %}

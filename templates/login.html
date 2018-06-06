@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+<!-- HTML and CSS all from bootstrap and www.w3schools.com -->
+
+{% block body_contents %}
+
+{{ error }}
+
+<p>
+<form method="POST" action="login">
+	<p>
+	zid: <input type="text" name="zid" >
+	<p>
+	password: <input type="text" name="password" > 
+	<p>
+	<input type="submit" value="Login" >
+</form>
+<br />
+<br />
+<a href="#recover" data-toggle="collapse">Forgot your password?</a>
+<div id="recover" class="collapse">
+	<br />
+	<form method="POST" action="login">
+	Enter student ID: <input type="text" name="recover_password" >
+	</form>
+</div>
+<br />
+<br />
+
+<a href="#create" data-toggle="collapse">Create new account</a>
+<div id="create" class="collapse">
+	<br />
+	<form method="POST" action="login">
+	zid: <input type="text" name="create_zid" >
+	<p>
+	<br />
+	Email: <input type="text" name="create_email" >
+	<p>
+	<br />
+	Password: <input type="text" name="create_password" >
+	<p>
+	<br/>
+	<input type="submit" value="Create" >
+	</form>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>unswtalk</title>
+<link href="{{url_for('static', filename='UNSWtalk.css')}}") rel="stylesheet">
+<!-- bootstrap library -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!-- Navbar from www.w3schools.com and based on bootstrap -->
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="">UNSWtalk</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a href="{{ url_for('login')}}">Login</a></li>
+		  <li><a href="{{ url_for('feed')}}">Feed</a></li>
+	  	<li><a href="{{ url_for('profile')}}">Profiles</a></li>
+	  	<li><a href="{{ url_for('search')}}">Search</a></li>
+      <li><a href="{{ url_for('settings')}}">Settings</a></li>
+	  	<li><a href="{{ url_for('faq')}}">FAQ</a></li>
+      <li><a href="{{ url_for('logout')}}">Log out</a></li>
+    </ul>
+  </div>
+</nav>
+
+{% block body_contents %}
+{% endblock %}
+
+</body>
+</html>

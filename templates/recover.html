@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+<!-- HTML and CSS all from bootstrap and www.w3schools.com -->
+
+{% block body_contents %}
+<h2>Password recovery</h2>
+<br/>
+<p>
+<form method="POST" action="recover">
+	<p>
+	zid: <input type="text" name="zid" >
+	<p>
+	<br/>
+	token: <input type="text" name="token" > 
+	<p>
+	<br/>
+	new password: <input type="text" name="new_password" > 
+	<p>
+	<br/>
+	<input type="submit" value="Set new password" >
+</form>
+
+{% endblock %}

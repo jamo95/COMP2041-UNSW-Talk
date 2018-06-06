@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+<!-- HTML and CSS all from bootstrap and www.w3schools.com -->
+
+{% block body_contents %}
+{% if session.logged_in %}
+    <b> Are you sure you want to logout?</b>
+    <br />
+    <br />
+    <form action="{{ url_for('logout') }}" method="post">
+        <input type="submit" class="btn btn-danger" value="Yes, log out" name="log_out">
+    </form>
+    <br />
+    <br />
+{% else %}
+    <a href="{{ url_for('login')}}">Login</a>
+{% endif%}
+{% endblock %}

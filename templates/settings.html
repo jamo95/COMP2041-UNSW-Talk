@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+<!-- HTML and CSS all from bootstrap and www.w3schools.com -->
+
+{% block body_contents %}
+{% if session.logged_in %}
+	<h2> Settings </h2>
+	<br />
+	<br />
+    <div class="panel panel-success">
+      	<div class="panel-heading">Add profile summary</div>
+	  		<form action="{{ url_for('settings') }}" method="post">
+				<div class="form-group">
+					<input type="text" class="form-control" name="profile_summary">
+				</div>
+			</form>
+      	<div class="panel-body">
+    </div>
+	<div class="panel panel-danger">
+      	<div class="panel-heading">Manage Friends List</div>
+      	<div class="panel-body">
+      		{% for friend_id in zids[session["zid"]]["friends"]%}
+      			<br />
+      			<span>
+      				{{ friend_id }}: 
+      			</span>
+      			{% if zids[friend_id]["full_name"]%}
+      				<span>
+      					{{ zids[friend_id]["full_name"] }}
+      				</span>
+      			{% endif %}
+      			<br />
+			    <form action="{{ url_for('settings') }}" method="post">
+			        <input type="submit" class="btn btn-danger" value="Delete friend">
+			        <input type="hidden" name="delete_friend" value="{{ friend_id }}"/>
+			    </form>	
+      		{% endfor %}
+      		<br />
+      		<form action="{{ url_for('settings') }}" method="post">
+				<div class="form-group">
+					<label>Add new friend (enter their student number):</label>
+					<input type="text" class="form-control" name="new_friend">
+				</div>
+			</form>
+      	</div>
+    </div>
+	<br />
+	<br />
+{% if suggestions %}
+  {% set high = paginate["page"] * 5%}
+  {% set low = high -  5%}
+  <div class="panel panel-danger">
+    <div class="panel-heading">Friend suggestions</div>
+    <div class="panel-body">
+      {% for friend in suggestions %}
+      {% if loop.index > low and high >= loop.index %}
+        <br/>
+          <span>{{friend[0]}}:  
+            <a href="{{ url_for('profile') + '?zid=' + friend[0] }}">
+              {{zids[friend[0]]["full_name"]}}
+            </a>
+
+            ({{ friend[1]}} mutual courses/friends) 
+          </span>
+        <br/>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  {% if paginate["total_pages"] > 1 %}
+  <ul class="pagination">
+    {% for num in range(paginate["total_pages"])%}
+    {% set page = num + 1 %}
+    {% if page != paginate["page"] %}
+    <li ><a href="?page={{page}}">{{page}}</a></li>
+    {% else %}
+      <li class="active"><a href="?page={{page}}">{{page}}</a></li>
+      {% endif %}
+      {% endfor %}
+  </ul>
+{% endif %}
+{% endif%}
+{% else %}
+	<a href="{{ url_for('login')}}">Login</a>
+{% endif%}
+{% endblock %}

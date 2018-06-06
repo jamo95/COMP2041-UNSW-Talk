@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+<!-- HTML and CSS all from bootstrap and www.w3schools.com -->
+
+{% block body_contents %}
+{% if session.logged_in %}
+	<b> FAQ </b>
+	<br />
+	<br />
+	This is a social media site for UNSW students.
+	<br />
+	<br />
+	Feed page allows you to view your recent posts, posts from friends and message chains that mentioned you. You many also make new posts, comments and messages. You may also delete your own.
+	<br />
+	<br />
+	Profile page allows you to view other user profiles including personal information, posts and friends.
+	<br />
+	<br />
+	Search page allows for you to search user profiles and posts.
+	<br />
+	<br />
+	Settings pages allows you to change your profile text and manage your friends.
+	<br />
+	<br />
+{% else %}
+	<a href="{{ url_for('login')}}">Login</a>
+{% endif%}
+{% endblock %}
